@@ -1,0 +1,13 @@
+SSMS is a database where we can save data.
+SSMS is a tool through which we can connect with SQL server
+SSMS is for data storing purpose.
+ 
+SSIS is a tool/software  through which we can read data from different data sources/connect multiple data sources  and transform data into another sources.
+
+Visual studio is environment where we can create our SSIS packages.
+V.S is a tool through which we can create SSIS package.
+
+SQL Server is a database where we can save data.
+
+Notepad file opens in notepad.We cannot see column, row or grid line in notepad file.
+CSV file is Excel file.We can see data into rows and columns and we can see grid line in CSV file.

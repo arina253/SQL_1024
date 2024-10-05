@@ -1,0 +1,202 @@
+--COMMON TABLE EXPRESSIONS
+SIMILAR TO TEMPORARY TABLE AND TABLE VARIABLES
+ USED FOR STORING TEMPORARY RESULTSET.
+ CAN BE REFERENCED WITHIN A SELECT,INSERT,UPDATE OR DELETE STATEMENTS.,THAT IMMEDIATELY FOLLOWS CTE
+
+ TEMP TABLE CAN BE USED AGAIN AND AGAIN AT ANY CERTAIN POINT IN STORED PROCEDURES
+ TABLE VARIABLE AN BE USED IN MULTIPLE LOCATIONS
+
+ --DEFINE CTE USING WITH KEYWORD,FOLLOWED BY THE NAME OF CTE
+ 
+ --SYNTAX
+ WITH CTE_NAME(COL1,COL2,COL3)
+ AS 
+ (
+ SELECT COL1,COL2,COL3
+ FROM TABLE_NAME 
+ WHERE 
+ GROUP BY 
+ )
+ INSERT CTE_NAME
+ UPDATE CTE_NAME
+ SELECT
+
+ -- SQL Script to create tblEmployee table:
+CREATE TABLE tblEmploye
+(
+  Id int Primary Key,
+  Name nvarchar(30),
+  Gender nvarchar(10),
+  DepartmentId int
+)
+
+-- SQL Script to create tblDepartment table 
+CREATE TABLE tblDepartment
+(
+ DeptId int Primary Key,
+ DeptName nvarchar(20)
+)
+
+--Insert data into tblDepartment table
+Insert into tblDepartment values (1,'IT')
+Insert into tblDepartment values (2,'Payroll')
+Insert into tblDepartment values (3,'HR')
+Insert into tblDepartment values (4,'Admin')
+
+--Insert data into tblEmployee table
+Insert into tblEmploye values (1,'John', 'Male', 3)
+Insert into tblEmploye values (2,'Mike', 'Male', 2)
+Insert into tblEmploye values (3,'Pam', 'Female', 1)
+Insert into tblEmploye values (4,'Todd', 'Male', 4)
+Insert into tblEmploye values (5,'Sara', 'Female', 1)
+Insert into tblEmploye values (6,'Ben', 'Male', 3)
+
+SELECT *FROM TBLEMPLOYEE
+SELECT *FROM TBLDEPARTMENT
+
+--TO DISPLAY THE TOTAL NUMBER OF EMPLOYEES BY DEPARTMENT NAME
+--USING JOIN 
+SELECT D.DEPTNAME,COUNT(E.ID)aS EMPCOUNT
+FROM TBLEMPLOYEE E
+JOIN TBLDEPARTMENT D
+ON E.DEPARTMENTID = D.DEPTID
+GROUP BY D.DEPTNAME
+ORDER BY COUNT (E.ID)
+
+--USING CTE
+
+WITH EMPLOYEECOUNT--(DEPARTMENTID,TOTALEMPLOYEES)
+AS
+(
+SELECT DEPARTMENTID,COUNT(*)AS TOTALEMPLOYEES
+FROM TBLEMPLOYEE
+GROUP BY DEPARTMENTID
+)
+
+SELECT *FROM EMPLOYEECOUNT
+
+WITH EmployeeCount --(DeptId, EmpCount)
+AS
+(
+ SELECT DepartmentId, COUNT(*) AS EmpCount
+ FROM tblEmploye
+ GROUP BY DepartmentId
+)
+
+SELECT * FROM EmployeeCount
+
+SELECT TBLDEPARTMENT.DEPTNAME,EMPLOYEECOUNT.TOTALEMPLOYEES
+FROM TBLDEPARTMENT
+JOIN EMPLOYEECOUNT
+ON TBLDEPARTMENT.DEPID = EMPLOYEECOUNT.DEPARTMENTID
+ORDER BY TOTALEMPLOYEES
+
+--NUMBER OF COLUMNS IN THE CTE NAME SHOULD BE THE SAME AS THAT IN SELECT STATEMENT
+
+--IF THERE IS NO NEED TO USE THE RESULTSET AGAIN AND AGAIN AND I WANT TO USE ONLY IN FIRST SELECT STATEMENT,USE CTE BECAUSE
+IF WE USE TEMP TABLE, IT IS STORED IN TEMPSYSTEM DATABASE.
+CTE IS FASTER TO RETRIEVE DATA IN FIRST SELECT STATEMENT.
+
+--WHEN THERE IS A NEED TO USE TEMPORARY RESULTSET ONLY ONCE IN STORED PROCEDURE, WE GO WITH CTE.
+
+--TABLE VARIABLE CAN BE USED AGAIN AND AGAIN.
+TEMP TABLE ARE STORED PHYSICALLY IN TEMP DATABASE.
+TEMP TABLE AND TABLE VARIABLE BOTH CAN BE REFERENCED AGAIN AND AGAIN WITHIN THE SAME BATCH
+
+STORED PROCEDURE WILL EXECUTE ALL CODE TOGETHER
+
+USING SAME SERVER-----SAME DATABASE-----CREATED TEMP TABLE----ACCESSED TEMP TABLE IN OUR MACHINE WE CAN ACCESS AS WELL UNTIL AND UNLESS OTHER PERSON CAN CLOSE THE CONNECTION.
+
+IF DECLARED TABLE VARIABLE ---- WILL NOT ABLE TO ACCESS TABLE VARIABLE IN MY SERVER BECAUSE IT IS STORED WITHIN OTHER PERSON QUERY WINDOW ONLY 
+
+NO ONE ABLE TO ACCESS CTE 
+
+TABLE VARIABLE CAN BE REUSED WITHIN THE SAME BATCH AGAIN AND AGAIN 
+
+CTE SHOULD BE REFERENCED NEXT ONLY .THERE SHOULD NOT BE ANYTHING/SQL STATEMENT IN BETWEEN CTE.
+
+--WE CAN USE COLUMN NAME IN CTE ONLY ID WE WANT DIFFERENT NAME OR WE CAN GIVE ALIAS NAME IN SELECT
+
+--WHEN WE UPDATE CTE, IT WILL BASICALLY UPDATE BASE TABLE FROM SELECT STATEMENT
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT * FROM tblEmploye
+SELECT * FROM tblDepartment
+
+SELECT D.DeptName, COUNT(E.ID) AS EmpCount
+FROM tblEmploye E
+JOIN tblDepartment D
+ON E.DepartmentId = D.DeptId
+GROUP BY D.DeptName
+ORDER BY COUNT(E.ID)
+-- SYNTAX
+--WITH CTE_NAME (COL1, COL2,COL3)
+--AS
+--(
+--SELECT COL1, COL2, COL3..
+--FROM TABLE_NAME
+--WHERE 
+--GROUP BY
+--)
+
+--INSERT CTE_NAME
+--UPDATE CTE_NAME 
+--SELECT
+
+
+-- Write a query using CTE, to display the total number of Employees by Department Name. The output should be as shown below
+
+WITH EmployeeCount (DepartmentId, TotalEmployees)
+AS
+(
+ SELECT DepartmentId, COUNT(*) 
+ FROM tblEmploye
+ GROUP BY DepartmentId
+)
+
+-- SELECT * FROM tblEmployee
+
+SELECT D.DeptName, E.TotalEmployees
+FROM tblDepartment D
+JOIN EmployeeCount E
+ON D.DeptId = E.DepartmentId
+ORDER BY TotalEmployees
+
+WITH EmployeeCount --(DepartmentId, TotalEmployees)
+AS
+(
+ SELECT D.DeptName, COUNT(E.ID) AS EmpCount
+ FROM tblEmploye E
+ JOIN tblDepartment D
+ ON E.DepartmentId = D.DeptId
+ GROUP BY D.DeptName
+ ORDER BY COUNT(E.ID)
+)
+
+-- SELECT * FROM tblEmployee
+
+
+
+
+WITH EmployeeCount --(DeptId, EmpCount)
+AS
+(
+ SELECT DepartmentId, COUNT(*) AS EmpCount
+ FROM tblEmploye
+ GROUP BY DepartmentId
+)
+
+SELECT * FROM EmployeeCount
+
+--SELECT D.DeptName, E.TotalEmployees
+--FROM tblDepartment D
+--JOIN EmployeeCount E
+--ON D.DeptId = E.DepartmentId
+--ORDER BY TotalEmployees
+
+--Select DeptName, COUNT(*)
+--from tblDepartment d
+--join tblEmploye e
+--on d.DeptId = e.DepartmentId
+--GROUP BY DeptName

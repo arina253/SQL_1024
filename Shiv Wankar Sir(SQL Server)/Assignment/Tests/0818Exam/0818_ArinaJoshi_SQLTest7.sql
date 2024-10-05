@@ -1,0 +1,429 @@
+
+--TEST
+
+/*Given a database about battles from the popular TV show "Game of Thrones":
+The database contains two tables: battle and king.
+
+Q1. For each region, find the house that has won the maximum number of battles. 
+Display the region, house, and number of wins.*/
+
+-- Create the 'king' table
+CREATE TABLE king (
+ k_no INT PRIMARY KEY,
+ king VARCHAR(50),
+ house VARCHAR(50)
+);
+
+SELECT 
+    B.REGION,
+    B.HOUSE,
+    COUNT(*)AS NUMBER_OF_WINS
+FROM 
+	BATTLE B
+GROUP BY
+	B.REGION,B.WINNER
+	
+
+
+/*Q2. Give the count of records coming in output for each of the join type for below table.
+
+TableA	|	TableB
+Id		|	Id
+1		|	1
+1		|	1
+1		|	1
+1		|	2
+1		|	Null
+null	|	
+null	|	*/
+
+CREATE TABLE TABLEA
+(
+ ID INT
+ )
+
+ CREATE TABLE TABLEB
+(
+ ID INT
+ )
+
+ INSERT INTO TABLEA VALUES (1)
+ INSERT INTO TABLEA VALUES (1)
+ INSERT INTO TABLEA VALUES (1)
+ INSERT INTO TABLEA VALUES (1)
+ INSERT INTO TABLEA VALUES (1)
+ INSERT INTO TABLEA VALUES (1)
+ INSERT INTO TABLEA VALUES (NULL)
+ INSERT INTO TABLEA VALUES (NULL)
+ SELECT *FROM TABLEA
+
+ INSERT INTO TABLEB VALUES (1)
+ INSERT INTO TABLEB VALUES (1)
+ INSERT INTO TABLEB VALUES (1)
+ INSERT INTO TABLEB VALUES (2)
+ INSERT INTO TABLEB VALUES (NULL)
+ 
+ SELECT *FROM TABLEA
+ SELECT *FROM TABLEB
+
+SELECT COUNT(1)
+FROM TABLEA TA
+FULL OUTER JOIN TABLEB TB
+ON TA.ID = TB.ID
+
+SELECT A.ID,B.ID
+FROM TABLEA A
+INNER JOIN TABLEB B
+ON A.ID = B.ID
+
+--NOTE: I have inserted one more record on TableA than the actual question
+--OUTPUT FOR LEFT JOIN - 20 ----17 
+--OUTPUT FOR INNER JOIN -18 ---15 RECORDS (INNER JOIN WILL NOT MATCH NULL)
+--OUTPUT FOR RIGHT JOIN - 20 ---17 COUNT
+--OUTPUT FOR FULL OUTER JOIN - 22 ---
+-- CROSS JOIN - 7*5 = 35 RECORDS
+
+--INNER JOIN WILL NOT CONSIDER NULL VALUES.
+
+
+-- Data set for next questions (Q3 & Q4)
+ CREATE Table Regions
+ (
+    Region_Id 	int,
+    Region_name varchar(50)
+)
+
+CREATE Table Customers
+(
+  Customer_id		int,
+  node_id			int,
+  region_id		int,
+  start_date		datetime,
+  end_date		datetime
+)
+
+CREATE Table customer_transactions
+(
+customer_id		int,
+txn_date		datetime,
+txn_type		varchar(100),
+txn_amount		money
+)
+
+/*Q3. For each month - how many Data Bank customers make more
+than 1 deposit and either 1 purchase or 1 withdrawal in a single
+month? (Note - txn_type values 'deposit', 'purchase', 'withdrawal')*/
+
+
+
+WITH CTE_MONTHLY_TRANSACTIONS AS 
+(
+SELECT C.CUSTOMER_ID, 
+	  YEAR(CT.TXN_TYPE) AS TXN_YEAR,
+      MONTH(CT.TXN_DATE) AS TXN_MONTH,
+	  SUM (CASE WHEN CT.TXN_TYPE = 'PURCHASE' THEN 1 ELSE 0 END)AS PURCHASE_COUNT,
+	  SUM (CASE WHEN CT.TXN_TYPE = 'DEPOSIT' THEN 1 ELSE 0 END) AS DEPOSIT_COUNT,
+	  SUM (CASE WHEN CT.TXN_TYPE = 'WITHDRAWAL' THEN 1 ELSE 0 END) AS WITHDRAWAL_COUNT
+FROM 
+	CUSTOMER_TRANSACTIONS CT
+JOIN
+	CUSTOMERS C ON CT.CUSTOMER_ID = C.CUSTOMER_ID
+GROUP BY
+	C.CUSTOMER_ID,
+	YEAR(CT.TXN_TYPE),
+	MONTH(CT.TXN_DATE)
+)
+SELECT 
+	COUNT(DISTINCT CUSTOMER_ID)AS CUSTOMER_COUNT,
+	TXN_YEAR,
+	TXN_MONTH
+FROM
+	CTE_MONTHLY_TRANSACTIONS 
+WHERE
+	DEPOSIT_COUNT > 1
+	AND
+	(PURCHASE_COUNT >= 1 OR WITHDRAWAL_COUNT >= 1)
+GROUP BY
+	TXN_YEAR,
+	TXN_MONTH
+
+/*Q4. What is the unique count and total amount for each transaction
+type?*/
+
+SELECT 
+	TXN_TYPE,
+	COUNT(DISTINCT CUSTOMER_ID) AS [UNIQUE COUNT],
+	SUM(TXN_AMOUNT)AS [TOTAL AMOUNT]
+FROM 
+	CUSTOMER_TRANSACTIONS 
+GROUP BY
+	TXN_TYPE
+
+
+/*Q5. Find the employees who manage the same number of employees as their manager.
+Assuming you have an employee table named employees with columns like employee_id and manager_id.*/
+
+SELECT *FROM EMPLOYEES
+WITH EMPLOYEESCOUNT AS
+(
+ SELECT
+	MANAGER_ID,
+	COUNT(EMPLOYEE_ID)AS NUM_EMPLOYEES
+ FROM 
+	EMPLOYEES
+ WHERE
+    MANAGER_ID IS NOT NULL
+ GROUP BY
+    MANAGER_ID
+)
+SELECT
+	E1.EMPLOYEE_ID,
+	E1.MANAGER_ID,
+	E2.EMPLOYEE_ID AS MANAGER_EMPLOYEE_ID,
+	E1_COUNT.NUM_EMPLOYEES AS EMPLOYEE_COUNT,
+    E2_COUNT.NUM_EMPLOYEES AS MANAGER_COUNT
+FROM
+	EMPLOYEES E1
+	JOIN EMPLOYEES E2 ON E1.MANAGER_ID = E2.EMPLOYEE_ID
+    JOIN EMPLOYEESCOUNT E1_COUNT ON E1.MANAGER_ID = E1_COUNT.MANAGER_ID
+    JOIN EMPLOYEESCOUNT E2_COUNT ON E2.EMPLOYEE_ID = E2_COUNT.MANAGER_ID
+WHERE
+	E1_COUNT.NUM_EMPLOYEES = E2_COUNT.NUM_EMPLOYEES
+
+
+
+/*Q6. Retrieve the top 3 most recent orders for each customer.
+Assuming you have a table named orders with columns customer_id, order_id, and order_date*/
+
+SELECT *FROM ORDERS$
+SELECT *FROM ORDERS$ ORDER BY [CUSTOMER ID]
+
+WITH RECENTORDERS 
+AS
+ (
+ SELECT 
+     [CUSTOMER ID],
+     [ORDER ID],
+     [ORDER DATE],
+	 ROW_NUMBER()OVER(PARTITION BY [CUSTOMER ID] ORDER BY [ORDER DATE]DESC)AS RN
+ FROM ORDERS$
+ )
+ SELECT
+     [CUSTOMER ID],
+     [ORDER ID],
+     [ORDER DATE]
+ FROM 
+    RECENTORDERS
+ WHERE
+    RN <=3
+ ORDER BY
+	[CUSTOMER ID],RN--[ORDER DATE]
+
+OTHER METHOD:
+
+SELECT * FROM
+
+(SELECT 
+[CUSTOMER ID], [ORDER ID], [ORDER DATE],
+ROW_NUMBER()OVER (PARTITION BY [CUSTOMER ID] ORDER BY [ORDER DATE] DESC) AS ORDERS
+FROM ORDERS$)AS RECENT
+
+WHERE ORDERS <=3
+
+
+
+
+/*Q7. Create a DML trigger which will track all the insert/update on Orders table.*/
+
+DROP TABLE IF EXISTS ORDERS_AUDIT
+CREATE TABLE ORDERS_AUDIT
+(
+   AUDITID INT IDENTITY PRIMARY KEY,
+   [ORDER ID] INT,
+   [OPERATION TYPE] VARCHAR(15),
+   [ORDER STATUS] VARCHAR(40),
+   [ORDER DATE] DATETIME,
+   MODIFIEDBY VARCHAR(80),
+   MODIFIEDDATE DATETIME DEFAULT GETDATE()
+)
+
+SELECT *FROM ORDERS$
+
+CREATE TRIGGER TR_ORDERS_INSERTUPDATE
+ON ORDERS$
+AFTER INSERT,UPDATE
+AS 
+BEGIN
+ SET NOCOUNT ON
+
+    --INSERT INTO ORDERSAUDIT FOR INSERT OPERATIONS
+	INSERT INTO ORDERS_AUDIT 
+	([ORDER ID],[OPERATION TYPE],[ORDER DATE],[MODIFIEDBY])
+    SELECT I.[ORDER ID],'INSERT',I.[ORDER DATE],SYSTEM_USER
+	FROM INSERTED I
+
+	--INSERT INTO ORDERSAUDIT FOR UPDATE OPERATIONS
+	INSERT INTO ORDERS_AUDIT 
+	([ORDER ID],[OPERATION TYPE],[ORDER DATE],[MODIFIEDBY])
+	SELECT I.[ORDER ID],'UPDATE',I.[ORDER DATE],SYSTEM_USER
+	FROM INSERTED I
+	INNER JOIN DELETED D ON I.[ORDER ID] = D.[ORDER ID]
+END 
+
+SELECT *FROM ORDERS_AUDIT
+
+/*Q8. Create a stored procedure to insert the the orders table. 
+orders with columns customer_id, order_id, and order_date (input will be cusome_id and order_id)
+Create a log table to log entries before and after successful execution of insert command.*/
+
+DROP TABLE LOG_TABLE
+CREATE TABLE LOG_TABLE
+(
+    LOGID INT IDENTITY(1,1) PRIMARY KEY,
+    LOGTIMESTAMP DATETIME DEFAULT GETDATE(),
+    ACTION VARCHAR(50),
+    CUSTOMER_ID NVARCHAR(255),
+    ORDER_ID NVARCHAR(255),
+    STATUS NVARCHAR(255)
+)
+
+CREATE OR ALTER PROCEDURE INSERT_ORDERS1
+    @CUSTOMERID NVARCHAR(255),
+    @ORDERID NVARCHAR(255)
+AS
+BEGIN
+    -- DECLARE A VARIABLE TO CAPTURE THE RESULT OF THE INSERT OPERATION
+    DECLARE @RESULT INT
+
+    -- START A TRANSACTION
+    BEGIN TRANSACTION
+
+    BEGIN TRY
+        -- LOGGING THE ATTEMPT TO INSERT
+        INSERT INTO LOG_TABLE (ACTION, CUSTOMER_ID, ORDER_ID, STATUS)
+        VALUES ('INSERT ATTEMPT', @CUSTOMERID, @ORDERID, 'STARTED')
+        
+        -- INSERTING INTO THE ORDERS$ TABLE
+        INSERT INTO ORDERS$ ([CUSTOMER ID], [ORDER ID])
+        VALUES (@CUSTOMERID, @ORDERID)
+        
+        -- SETTING THE RESULT TO INDICATE SUCCESS
+        SET @RESULT = 1
+        
+        -- LOGGING THE SUCCESSFUL INSERTION
+        INSERT INTO LOG_TABLE (ACTION, CUSTOMER_ID, ORDER_ID, STATUS)
+        VALUES ('INSERT SUCCESS', @CUSTOMERID, @ORDERID, 'COMPLETED');
+        
+        -- COMMITTING THE TRANSACTION
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        -- ROLLING BACK THE TRANSACTION IN CASE OF AN ERROR
+        ROLLBACK TRANSACTION;
+        
+        -- INSERTING INTO THE LOG_TABLE
+        INSERT INTO LOG_TABLE (ACTION, CUSTOMER_ID, ORDER_ID, STATUS)
+        VALUES ('INSERT FAILURE', @CUSTOMERID, @ORDERID, ERROR_MESSAGE());
+    
+   END CATCH
+END
+
+SELECT *FROM ORDERS$
+
+EXEC INSERT_ORDERS1 @CUSTOMERID = 'AJ-2024819',@ORDERID = 'TX-2022-234567'
+EXEC INSERT_ORDERS1 @CUSTOMERID = 'AJ-2024820',@ORDERID = 'TX-2024-234567'
+EXEC INSERT_ORDERS1 'AJ-2024','TX-2024'
+EXEC INSERT_ORDERS1 'AJ-2019','TX-2019'
+EXEC INSERT_ORDERS1 @CUSTOMERID='AJ-19390',@ORDERID='AJ-2014-156314'
+
+SELECT *FROM LOG_TABLE
+
+------------------------------------------------------------------------------------------------------------------------------
+
+-- Check the data types of columns in ORDERS$ table
+SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'ORDERS$'
+
+-- Check the data types of columns in LOG_TABLE
+SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'LOG_TABLE'
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+/*Given a database about battles from the popular TV show "Game of Thrones":
+The database contains two tables: battle and king.
+
+Q1. For each region, find the house that has won the maximum number of battles. 
+Display the region, house, and number of wins.*/
+
+-- Create the 'king' table
+CREATE TABLE king (
+ k_no INT PRIMARY KEY,
+ king VARCHAR(50),
+ house VARCHAR(50)
+);
+
+SELECT *FROM KING
+
+CREATE TABLE BATTLE
+(
+	BATTLE_NO INT PRIMARY KEY,
+	BATTLE_NAME VARCHAR (100),
+	REGION VARCHAR(50),
+	KING_INVOLVED INT,
+	OUTCOME VARCHAR(10),
+	CONSTRAINT FK_BATTLE_KING_INVOLVED FOREIGN KEY (KING_INVOLVED)REFERENCES KING(K_NO)
+)
+
+--assuming that outcome = 'win' indicates that the house associated with that king won the battle, you can write a query like this:
+
+SELECT 
+	B.REGION,
+	K.HOUSE,
+	COUNT(*)AS NUM_WINS
+FROM 
+	BATTLE B
+JOIN
+	KING K ON B.KING_INVOLVED = K.K_NO
+WHERE 
+	B.OUTCOME = 'WIN'
+GROUP BY
+	B.REGION,K.HOUSE
+HAVING
+	COUNT(*) = (
+	   SELECT
+			MAX(COUNT_WINS)
+	   FROM
+	      (SELECT 
+			COUNT(*)AS COUNT_WINS
+		  FROM
+			BATTLE B2
+		  JOIN
+		     KING K2 ON B2.KING_INVOLVED = K2.K_NO
+		  WHERE
+		     B2.REGION = B.REGION AND B2.OUTCOME = 'WIN'
+          GROUP BY
+			K2.HOUSE) AS HOUSE_WINS
+	)
+
+
+--SCHEDULER - apex sql, stonebranch, power shell, sql server agent
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+

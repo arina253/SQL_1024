@@ -1,0 +1,59 @@
+Query optimization
+
+Inside the stored procedure,
+Performance improvement by tuning the performance.
+Check execution plan first.
+1. Use Indexes effectively.
+Tables should have proper indexes.
+Joins, where condition and Order By clause - see columns and create non clustered index on such columm.
+Speed up the data retrieval. Can look for a particular dataset.
+Unnecessary indexes should be dropped from the table.
+
+2. Selecting the data
+Multiple stored procedures in which column selection will be there.
+We shouldn't do select *.....select only the required column.U
+
+3.Use EXISTS instead of IN for sub queries
+IN will look for some sort of dataset.
+IN processes the entire subquery result set.
+EXISTS can be more efficient and stops searching as soon as it finds a match.
+EXISTS is useful in the subquery.
+
+4. Use JOINS instead of Subqueries
+Because they allow SQL server to process relationships between tables directly rather than running separate queries.
+
+5.Use Indexed views for complex aggregations
+
+6. Use Proper Data Types
+we can store date in varchar also but should be stored in date datatype.
+
+7.Use temporary tables, CTE and table variables appropriately.
+Temporary tables for large dataset and we need to use within sp multiple
+ times.
+CTE preferred for smaller resultset and ait is not necessary to process in batch
+Table variables for smaller dataset but have to refer again and again.
+
+Partitioning Large Tables
+partition large table into smaller ones and provide relationship, if needed use join.
+if small table, small column.
+During data migration, need to work on partitioning.
+
+Optimizing Joins and Join Order
+which table to be used in from and which one to use in ,join order of tables
+Table having lesser data should be used first before last table.
+Inner join - use small table in from and large table in join condition
+
+NOLOCK - One of the imp thing.Using tables that are referenced by multiple stored procedures.
+NOLOCK - WHEN we use with it, it will read data without any locking. Transaction may lock table but when we use with NOLOCK,
+Work only with SELECT statement
+Avoid NOLOCK on DELETE and UPDATE
+
+Optimize Network Traffic(Batch Queries)
+
+We should always look for other option while using wild card characters bcoz while pattern patcinh.avoid use of LIKE operator, use combination of subquery and charindex..
+
+Did you evers
+
+
+
+

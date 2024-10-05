@@ -1,0 +1,32 @@
+
+10_CopyColumn******************************
+1. Add new data flow from left side tool box and open this .
+2. Drag OLE DB source from tool box and open it.
+3. connect OLE DB source with student_SSIS table from sql server.
+4. drag copy column from left side tool box and connect with OLED DB source.
+5. drag multicast for toolbox and connect with copy column , enable data viewer. 
+
+------------------------------------------------------------------------------------------------
+
+11_CharacterMap*****************************************
+1. Add new data flow from left side tool box and open this . 
+2. Drag OLE DB source from tool box and open it.
+3. connect OLE DB source with student_SSIS table from sql server.
+4. drag character map from tool box and connect with OLE DB source.
+
+-------------------------------------------------------------------------------------------------
+
+12_ConditionalSplit*************************
+1. Add new data flow from left side tool box and open this .
+ 2. Drag OLE DB source from tool box and open it.
+3. drag conditional split from left side tool box and connect with OLEDB source
+4. in conditional split, 
+Output Name =Male StudentCOndition = drag the column , on which you want to apply condition 
+for eg , [gender]=="M"
+[gender]=="F"
+A=5 -- assign 5 to a variable A==5 -- checking A value need to 5 
+PS ; 
+after condition name in last space not allowed in condition = not allowed 
+by default , SSIS give one more output 
+default output name = the no . of records , those who not full filled  given condition . click on ok button . 
+5. add multicast from toolbox as per your condition  and connect one by one all output arrow with all multicast

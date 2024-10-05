@@ -1,0 +1,17 @@
+DeptId,Name,GroupName,ModifiedDate
+1,Engineering,Research and Development,03-08-2022  11:38:15
+2,Tool Desing,Research and Development,03-08-2022 11:38
+3,Sales,Sales And Marketing,03-08-2022 11:38
+4,Marketing,Sales And Marketing,03-08-2022 11:38
+5,Research and Development,Research and Development,03-08-2022 11:38
+6,Purchasing,Inventory Management,03-08-2022 11:38
+7,Production,Manufacturing,03-08-2022 11:38
+8,Production Content,Manufacturing,03-08-2022 11:38
+9,Human Resource,Executive General,03-08-2022 11:38
+10,Finance,Executive General,03-08-2022 11:38
+11,Information Services,Research and Development,03-08-2022 11:38
+12,Document Content,Quality Assurance,03-08-2022 11:38
+13,Quality Assurance,Quality Assurance,03-08-2022 11:38
+14,Facilities And Management,Executive General,03-08-2022 11:38
+15,Shipping,Inventory Management,03-08-2022 11:38
+16,Executive,Executive General,03-08-2022 11:38

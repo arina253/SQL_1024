@@ -1,0 +1,63 @@
+Given a database about battles from the popular TV show "Game of Thrones":
+The database contains two tables: battle and king.
+
+Q1. For each region, find the house that has won the maximum number of battles. 
+Display the region, house, and number of wins.
+
+-- Create the 'king' table
+CREATE TABLE king (
+ k_no INT PRIMARY KEY,
+ king VARCHAR(50),
+ house VARCHAR(50)
+);
+
+Q2. Give the count of records coming in output for each of the join type for below table.
+
+TableA	|	TableB
+Id		|	Id
+1		|	1
+1		|	1
+1		|	1
+1		|	2
+1		|	Null
+null	|	
+null	|	
+
+Number of records for each join (give count only)
+
+-- Data set for next questions (Q3 & Q4)
+Table - Regions
+Region_Id 	int
+Region_name varchar(50)
+
+Table - Customers
+Customer_id		int,
+node_id			int,
+region_id		int,
+start_date		datetime,
+end_date		datetime
+
+Table - customer_transactions
+customer_id		int,
+txn_date		datetime,
+txn_type		varchar(100),
+txn_amount		money
+
+Q3. For each month - how many Data Bank customers make more
+than 1 deposit and either 1 purchase or 1 withdrawal in a single
+month? (Note - txn_type values 'deposit', 'purchase', 'withdrawal')
+
+Q4. What is the unique count and total amount for each transaction
+type?
+
+Q5. Find the employees who manage the same number of employees as their manager.
+Assuming you have an employee table named employees with columns like employee_id and manager_id.
+
+Q6. Retrieve the top 3 most recent orders for each customer.
+Assuming you have a table named orders with columns customer_id, order_id, and order_date
+
+Q7. Create a DML trigger which will track all the insert/update on Orders table.
+
+Q8. Create a stored procedure to insert the the orders table. 
+orders with columns customer_id, order_id, and order_date (input will be cusome_id and order_id)
+Create a log table to log entries before and after successful execution of insert command.

@@ -1,0 +1,27 @@
+Aggregate*******************
+1. drag data flow task from left side tool box. double click on data flow task .
+2. drag flat file source from left side tool box and connect with your flat file 
+3. drag aggregate from left side tool box . connect with flat file source
+4.  select column from drop down and select operation = group by 
+output Alias : header of output column 
+Operation = Group by : show unique in column 
+Operation = Count : show no. of records in column 
+Operation = count DISTINCT : show unique number of records in column
+
+**************************************************************************************************
+Aggregates create summary of data.
+Used for generating summary of data.
+
+Operation = Group by - to group each and every value of selected column, all similar properties/values going into one record.
+
+Operation = Count - to show the number of row or records in a column.
+
+Operation = Count distinct - show unique number of records in column.Return unique number of rows.
+
+Whenever new column is added before Multicast, delete existing Multicast and Enable Data Viewer.
+
+To remove duplicate data in SSIS, we can use 1) Sort   2) Aggregate
+
+
+
+

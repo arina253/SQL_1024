@@ -1,0 +1,66 @@
+SQL Server table to notepad file
+******************************************
+Source : SQL Server = OLEDB Source
+Destination = notepad = Flat File 
+
+1. create a new SSIS Package 
+a. right click on right SSIS Package folder 
+b. select new SSIS Package 
+C. rename SSIS package
+Name = 3_SQL2Txt
+
+2. Drag or double click on data flow task from left side toolbox 
+
+3. Double click on data flow task 
+
+4. drag or double click on OLEDB source from left side tool
+
+5. double click on OLEDB source
+
+OLEDB Connection Manager :
+************************
+which sql server you want to connect 
+a. click on drop down . if it blank then go and click new button 
+b. In this new Window , 
+if your database is present in right data connection then just select and click ok button . 
+
+Data Access mode :
+*******************
+how can you access data from OLEDDB source
+
+A. Table or View : where you can select any table from name of that or view drop down 
+
+B. SQL command in Data Access mode and then write select query in SQL Command mode
+
+C. click on preview button 
+
+D. click on left side column tab . 
+
+6. click on ok button . 
+
+7 Drag or double click on flat file destination  from left side tool box  and connect with OLEDB source 
+
+8. double click on flat file destination 
+
+Flat file Connection Manager 
+****************************
+A. click on drop down named as flat file connection manager , if you are not see any connection manager in drop down then click on new button . 
+
+B. select delimited option and then click ok . 
+
+C. click on browse button , next to the file name button .
+
+d. write the new file name in file name section . click on open button from buttom . 
+
+e. make sure , you have check box in column name in the first row. 
+
+f. click on left side column tab . 
+
+g. click on ok button . 
+
+9. click on left side mapping tab . make sure that all input column are map with destination columns. 
+
+10. click on ok button . 
+
+
+11. Right click on blank space and select execute task option to run your SSIS Package.

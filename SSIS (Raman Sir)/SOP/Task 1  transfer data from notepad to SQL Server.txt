@@ -1,0 +1,68 @@
+Task 1 : transfer data from notepad to SQL Server table
+*********************************************************
+for create new SSIS package 
+
+1. go to right , solution explore
+2. right click on SSIS package folder
+3. select new SSIS package option , rename the package 
+4. for rename , select that package ,right click, select rename option and rename package 
+
+********************************************************
+create package
+*****************
+1. drag and drop in middle window or double click on data flow from left side SSIS Toolbox. 
+2. Double click on newly added data flow task .
+3. in this , 
+Source : notepad + Flat File Source
+drag and drop in middle window or double click on Flat file source from left side toolbox Other Source section. 
+4. Double click on newly added Flat file Source. 
+
+Flat File Connection Manager : store information about file , for eg . file name , file location 
+
+5. click on new button in from of flat file connection manager .
+6. In New Window 
+A. click on browse in from of file name 
+B. go to location where your file is saved , select that file and click on open button from bottom .
+C. make sure columns names in the first data row is selected , if not selected then select 
+D. right click on left side columns tab . make sure all column is display. 
+E. click on ok Button from bottom.
+
+7. click on preview button , to see the data from file. 
+8. click on left side column tab. in this window 
+
+9. left side external column name coming from your file.
+output column right side , this can be rename by you . 
+10. click on ok button . 
+
+11. 
+Destination : SQL Server = OLEDB Destination 
+
+double click on OLEDB destination or drag and drop OLEDB destination from left side tool box. 
+
+12 . Connect OLEDB destination with flat file source using blue arrow from flat file source.
+13. Double click on OLEDB destination 
+OLEDB Connection Manager hold below information 
+
+a. SQL Server Name 
+b. Database 
+c. user name & Password for login in sql server 
+if you see blank connection manager in drop down  then click on new button . in new window click on new button . 
+
+in this window below information needed. 
+provide = Microsoft OLE DB provider for SQL Server
+
+Server Name = copy from SQL Server 
+
+Authentication = Window Authentication  
+
+Connect to database = choose database for store data. 
+
+click on ok button . 
+14. 
+data access mode= table or view 
+
+if you table not listed in Name if that or view name section then click on new button next to this . 
+click on new button and select the table name within p[ ] , delete the table name and provide new name .
+14. click on left side mapping option and 
+map all column  
+15. Right click on blank and select execute ask option .

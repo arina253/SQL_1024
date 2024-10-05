@@ -1,0 +1,87 @@
+--- Q1: Delete duplicate data --- 
+
+drop table if exists cars;
+create table cars
+(
+	model_id		int primary key,
+	model_name		varchar(100),
+	color			varchar(100),
+	brand			varchar(100)
+);
+insert into cars values(1,'Leaf', 'Black', 'Nissan');
+insert into cars values(2,'Leaf', 'Black', 'Nissan');
+insert into cars values(3,'Model S', 'Black', 'Tesla');
+insert into cars values(4,'Model X', 'White', 'Tesla');
+insert into cars values(5,'Ioniq 5', 'Black', 'Hyundai');
+insert into cars values(6,'Ioniq 5', 'Black', 'Hyundai');
+insert into cars values(7,'Ioniq 6', 'White', 'Hyundai');
+
+select * from cars;
+
+--SOLUTION 1
+DELETE FROM CARS 
+WHERE MODEL_ID IN
+	(select model_id 
+	 FROM (SELECT *, ROW_NUMBER()OVER(PARTITION BY MODEL_NAME, BRAND,COLOR ORDER BY MODEL_ID)AS RN FROM CARS)X
+	 WHERE X.RN > 1)
+/*The ROW_NUMBER() function is used to assign a unique row number to each duplicate group, partitioned by model_name, color, and brand. The row with the smallest model_id gets rn = 1.
+The DELETE statement removes the rows where rn > 1, keeping only the row with the smallest model_id in each group.*/
+
+--SOLUTION 2
+;WITH CTE AS (
+  SELECT
+    model_id,
+    ROW_NUMBER() OVER (PARTITION BY model_name, color, brand ORDER BY model_id) AS rn
+  FROM cars
+)
+DELETE FROM cars
+WHERE model_id IN (SELECT model_id FROM CTE WHERE rn > 1);
+
+--SOLUTION 3
+DELETE FROM CARS 
+WHERE MODEL_ID NOT IN (SELECT MIN(MODEL_ID)FROM CARS
+                       GROUP BY model_name,BRAND,COLOR)
+/*This query deletes rows where the model_id is not the smallest within each group defined by model_name, brand, and color.
+The GROUP BY ensures that only one row per combination of model_name, brand, and color is kept.*/ 
+
+---------------------------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS employees;
+CREATE TABLE employees
+(
+    emp_id         INT PRIMARY KEY,
+    emp_name       VARCHAR(100),
+    department     VARCHAR(100),
+    hire_date      DATE
+);
+
+INSERT INTO employees VALUES (1, 'John Doe', 'Sales', '2021-01-15');
+INSERT INTO employees VALUES (2, 'Jane Smith', 'Marketing', '2020-11-22');
+INSERT INTO employees VALUES (3, 'John Doe', 'Sales', '2021-01-15');
+INSERT INTO employees VALUES (4, 'Anna Lee', 'HR', '2019-06-17');
+INSERT INTO employees VALUES (5, 'John Doe', 'Sales', '2021-01-15');
+INSERT INTO employees VALUES (6, 'Jane Smith', 'Marketing', '2020-11-22');
+
+/*Task:
+Write a query to delete duplicate records, keeping only the one with the lowest emp_id for each combination of emp_name, department, and hire_date.*/
+
+SELECT *FROM EMPLOYEES
+
+;WITH CTE AS (
+	SELECT 
+		EMP_ID,
+		ROW_NUMBER()OVER(PARTITION BY EMP_NAME,DEPARTMENT,HIRE_DATE ORDER BY EMP_ID)RN
+	FROM EMPLOYEES
+)
+DELETE FROM EMPLOYEES  
+  WHERE EMP_ID IN (SELECT EMP_ID FROM CTE WHERE RN >1 )
+
+--We cannot directly delete from a Common Table Expression (CTE) in SQL
+
+
+
+
+
+
+
+

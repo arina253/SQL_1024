@@ -1,0 +1,88 @@
+1. Write a SQL statement to create a simple table countries including columns country_id,country_name and region_id.
+
+2. Write a SQL statement to create a table named countries including columns country_id, country_name and region_id and 
+make sure that no countries except Italy, India and China will be entered in the table.
+
+3. Write a SQL statement to create a table named jobs including columns job_id, job_title, min_salary, max_salary and 
+check whether the max_salary amount exceeding the upper limit 25000.
+
+4. Write a SQL statement to create a table named countries including columns country_id,country_name and region_id and 
+make sure that no duplicate data against column country_id will be allowed at the time of insertion.
+
+5. Write a SQL statement to create a table countries including columns country_id, country_name and region_id and 
+make sure that the column country_id will be unique and store an auto incremented value.
+
+6. Write a SQL statement to create a table job_history including columns employee_id, start_date, end_date, job_id and department_id and make sure that, the employee_id column does not contain any 
+duplicate value at the time of insertion and the foreign key column job_id contain only those values which are exists in the jobs table.
+
+Here is the structure of the table jobs;
+
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| JOB_ID     | varchar(10)  | NO   | PRI |         |       |
+| JOB_TITLE  | varchar(35)  | NO   |     | NULL    |       |
+| MIN_SALARY | decimal(6,0) | YES  |     | NULL    |       |
+| MAX_SALARY | decimal(6,0) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+
+7.  Write a SQL statement to create a table employees including columns employee_id, first_name, last_name, email, phone_number hire_date,
+ job_id, salary, commission, manager_id and department_id and make sure that, the employee_id column does not contain any duplicate value 
+at the time of insertion and the foreign key columns combined by department_id columns contain only those unique combination values, which exists in the departments table.
+
+Assume the structure of departments table below.
+
++-----------------+--------------+------+-----+---------+-------+
+| Field           | Type         | Null | Key | Default | Extra |
++-----------------+--------------+------+-----+---------+-------+
+| DEPARTMENT_ID   | decimal(4,0) | NO   | PRI | 0       |       |
+| DEPARTMENT_NAME | varchar(30)  | NO   |     | NULL    |       |
+| MANAGER_ID      | decimal(6,0) | NO   | PRI | 0       |       |
+| LOCATION_ID     | decimal(4,0) | YES  |     | NULL    |       |
++-----------------+--------------+------+-----+---------+-------+
+
+8. Sample table: orders
+
+ord_no      purch_amt   ord_date    customer_id  salesman_id
+----------  ----------  ----------  -----------  -----------
+70001       150.5       2012-10-05  3005         5002
+70009       270.65      2012-09-10  3001         5005
+70002       65.26       2012-10-05  3002         5001
+70004       110.5       2012-08-17  3009         5003
+70007       948.5       2012-09-10  3005         5002
+70005       2400.6      2012-07-27  3007         5001
+70008       5760        2012-09-10  3002         5001
+70010       1983.43     2012-10-10  3004         5006
+70003       2480.4      2012-10-10  3009         5003
+70012       250.45      2012-06-27  3008         5002
+70011       75.29       2012-08-17  3003         5007
+70013       3045.6      2012-04-25  3002         5001
+
+
+write a SQL query to identify the unique salespeople ID. Return salesman_id.
+WRITE a sql query to display result based on ordered desc customer_id 
+write a sql query to display records based on  ord_date
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

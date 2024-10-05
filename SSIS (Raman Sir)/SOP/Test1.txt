@@ -1,0 +1,13 @@
+Test1 : 06/02/2024
+
+1. Create a SSIS Package that transfer two csv and one notepad file data into SQL server table . 
+source = csv1 +csv2+txt1 two merge 
+destination = SQL Server 
+2. create a SSIS package to display two csv file data value using multicast   
+two flat file source --> sort--> merge --> multicast 
+3. create a SSIS Package that transfer one SQL server data into two note pad file . 
+OLEDB Source --> multicast --> two flat file destination  
+4. create  a SSIS Package that transfer data from notepad to CSV file. 
+flat file source --> flat file destination
+
+--------------------------------------------------------------------------------------------------

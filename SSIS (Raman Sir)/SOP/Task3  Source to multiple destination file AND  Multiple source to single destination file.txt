@@ -1,0 +1,44 @@
+Source--> multiple destination file( both are notepad or csv , one csv file + one notepad )
+
+SQL Server to notepad & CSV destination 
+***********************************************
+
+1. add data flow task from SSIS toolbox
+2. double click on data flow taska dn go inside this task 
+3.Add OLEDB source from SSIS toolbox and double click on OLEDB source
+4. if OLEDB connection manager drop down is blank then click on new button and select one oledb connection and click ok button 
+5. select that table from name of that table and view drop down. 
+6.if you want see existing data from sql server table click on preview button . 
+7. click on left side column tab to see all columns .
+8. add two flat file destination from tool box and rename it with right click on flat file destination and choose rename option 
+9. Add multicast from left side multicast in SSIS 
+10. open notepad destination file and edit it 
+1.. click on new button in from of flat file connection manager. , then choose delimited option . 
+12.click on browse button and select the location where you want to save the file. and click on column named in the first data row check box. click on left side column table and make sure your get all column name . click on ok button . 
+13. click on for CSV file destination 
+14. click on new button in from of flat file connection manager. , then choose delimited option . 
+15.click on browse button and select the location where you want to save the file. and click on column named in the first data row check box. click on left side column table and make sure your get all column name . click on ok button .
+16. right click on blank space and select excute task option . 
+
+***********************************
+ two source file --> destination 
+ Merg
+*************************************
+1. add data flow task from SSIS toolbox
+2. double click on data flow taska dn go inside this task 
+3. open notepad destination file and edit it . click on new button in from of flat file connection manager.
+4.click on browse button and select the location where you want to save the file. and click on column named in the first data row check box. click on left side column table and make sure your get all column name . click on ok button . 
+4. click on for CSV file destination 
+5. click on new button in from of flat file connection manager. , then choose delimited option . 
+6.click on browse button and select the location where you want to save the file. and click on column named in the first data row check box. click on left side column table and make sure your get all column name . click on ok button .
+7. drag sort from left side tool box for every sources and connect both sources with sort
+8. double click on sort. select the column that want to use in sort . 
+9. drag merge from left side tool box and connect all sort one by one . 
+10. drag OLEDB destination and connect with merge 
+11. open OLEDB destination and 
+a. click on drop down . if it blank then go and click new button 
+b. In this new Window , 
+if your database is present in right data connection then just select and click ok button . 
+click on ok button and then click on left side mapping tab to saw that all columns are there. 
+click on ok button 
+12. right click on blank space and select excute task option .

@@ -1,0 +1,34 @@
+https://myaccount.google.com/apppasswords?rapt=AEjHL4OqE6i8O8m7fqo7FeAy3gCb9HwmTQm88PWNusCmsZlPnC1T-DEaS2ziM77z_9wuyLY-K0HsqXEZ9d-5S3cmXfO3HKiUn
+https://myaccount.google.com/apppasswords
+
+Sushobhit Raman 8:33 PM
+https://myaccount.google.com/apppasswords
+
+
+string From, To, Subject, Body; // Declare 4 variable and all have string datatype 
+From = "raman.sushobhit@gmail.com";// Assign value to your variable 
+                                   // From = "raman.sushobhit@yahoo.com"; 
+To = "raman.sushobhit@gmail.com,mtripathi05@gmail.com"; // Assign value to your variable 
+Subject = "Test mail Subject from SSIS"; // Assign value to your variable 
+Body = "Test mail Body from SSIS"; // Assign value to your variable 
+// mail configuration 
+MailMessage msg = new MailMessage(); // declare one variable msg from mailMessage 
+msg.To.Add(To); // Assign msg To property to varaible To
+msg.From = new MailAddress(From);
+msg.Subject = Subject;
+msg.Body = Body;
+
+// mail configuration 
+SmtpClient smtpClient = new SmtpClient("smtp.gmail.com"); // SMTp Server details for Gmail service
+smtpClient.Port = 587; // gmail servie default prot number 
+smtpClient.Credentials = new System.Net.NetworkCredential(From, "oxvoslhzxdcszrbz"); //  validate user name and password
+// for Yahoo from mail I D
+//SmtpClient smtpClient = new SmtpClient("smtp.yahoo.mail.com");
+//smtpClient.Port = 465;
+//smtpClient.Credentials = new System.Net.NetworkCredential(From, "Password");
+smtpClient.EnableSsl = true;
+smtpClient.Send(msg);
+
+manjeet.acharya2014@gmail.com,lgyatso999@gmail.com,karki.bibha@gmail.com
+
+ App password: dufr jdrw fkeq ntyv
